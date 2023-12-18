@@ -1,9 +1,7 @@
-{{- if not .Values.extraFilesConfigMapNameOverride }}
----
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: fluentd-config-{{ include "fluentd.shortReleaseName" . }}
+  name: fluentd-config
   labels:
     {{- include "fluentd.labels" . | nindent 4 }}
 data:
@@ -11,14 +9,13 @@ data:
   {{$key }}: |-
     {{- $value | nindent 4 }}
 {{- end }}
-{{- end }}
 
-{{- if not .Values.mainConfigMapNameOverride }}
 ---
+
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: fluentd-main-{{ include "fluentd.shortReleaseName" . }}
+  name: fluentd-main
   labels:
     {{- include "fluentd.labels" . | nindent 4 }}
 data:
@@ -35,4 +32,3 @@ data:
     {{- range $key := .Values.configMapConfigs }}
     {{- print "@include " $key ".d/*"  | nindent 4 }}
     {{- end }}
-{{- end }}
